@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Newtonsoft.Json;
+using Tests.Extensions;
 using Web.Api;
 using Web.Api.Application;
 using Xunit;
 
-namespace Playground
+namespace Tests
 {
     public class StudiesControllerTests
     {
@@ -53,17 +51,6 @@ namespace Playground
             
             response.StatusCode.Should().Be(StatusCodes.Status201Created);
             response.Headers.Location.Should().Be($"/studies/{command.StudyId}/slides/{command.SlideId}");
-        }
-    }
-    
-    internal static class HttpClientExtensions
-    {
-        public static Task<HttpResponseMessage> SendJsonPost<TCommand>(this HttpClient client, string requestUri, TCommand command)
-        {
-            var json = JsonConvert.SerializeObject(command);
-            var httpContent = new StringContent(json, Encoding.Default, "application/json");
-
-            return client.PostAsync(requestUri, httpContent);
         }
     }
 }
