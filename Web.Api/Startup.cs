@@ -25,6 +25,18 @@ namespace Web.Api
 
                 return commandBus;
             });
+
+            services.AddSingleton<CommandHandler<StartStudy>>(s =>
+            {
+                var studyHandlers = s.GetRequiredService<StudyHandlers>();
+                return studyHandlers.Handle;
+            });
+
+            services.AddSingleton<CommandHandler<IncludeSlideInStudy>>(s =>
+            {
+                var commandBus = s.GetRequiredService<CommandBus>();
+                return commandBus.Send;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

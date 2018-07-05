@@ -7,24 +7,27 @@ namespace Web.Api.Controllers
     [Route("[controller]"), ApiController]
     public class StudiesController : ControllerBase
     {
-        private readonly CommandBus _commandBus;
+        private readonly CommandHandler<StartStudy> _startStudy;
+        private readonly CommandHandler<IncludeSlideInStudy> _includeSlide;
 
-        public StudiesController(CommandBus commandBus)
+        public StudiesController(CommandHandler<StartStudy> startStudy,
+            CommandHandler<IncludeSlideInStudy> includeSlide)
         {
-            _commandBus = commandBus;
+            _startStudy = startStudy;
+            _includeSlide = includeSlide;
         }
         
         [HttpPost]
         public async Task<ActionResult> StartStudy(StartStudy command)
         {
-            await _commandBus.Send(command);
+            await _startStudy(command);
             return Created($"/studies/{command.Id}", null);
         }
 
         [HttpPost, Route("{id}/slides")]
         public async Task<ActionResult> IncludeSlide(IncludeSlideInStudy command)
         {
-            await _commandBus.Send(command);
+            await _includeSlide(command);
             return Created($"/studies/{command.StudyId}/slides/{command.SlideId}", null);
         }
     }
