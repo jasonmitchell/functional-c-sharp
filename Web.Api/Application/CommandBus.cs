@@ -11,7 +11,13 @@ namespace Web.Api.Application
         
         public void RegisterHandler<TCommand>(Func<TCommand, Task> handler)
         {
-            _handlers.Add(typeof(TCommand), c => handler((TCommand)c));
+            _handlers.Add(typeof(TCommand), c => Log((TCommand)c, handler));
+        }
+
+        private Task Log<TCommand>(TCommand command, Func<TCommand, Task> next)
+        {
+            Console.WriteLine("Really sophisticated logging");
+            return next(command);
         }
         
         public Task Send<TCommand>(TCommand command)
