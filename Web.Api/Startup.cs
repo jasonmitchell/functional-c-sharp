@@ -14,6 +14,17 @@ namespace Web.Api
             services.AddMvc();
 
             services.AddSingleton<StudyHandlers>();
+
+            services.AddSingleton(s =>
+            {
+                var commandBus = new CommandBus();
+
+                var studyHandlers = s.GetRequiredService<StudyHandlers>();
+                commandBus.RegisterHandler<StartStudy>(studyHandlers.Handle);
+                commandBus.RegisterHandler<IncludeSlideInStudy>(studyHandlers.Handle);
+
+                return commandBus;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
