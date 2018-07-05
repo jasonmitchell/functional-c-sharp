@@ -18,7 +18,7 @@ namespace Web.Api.Application
             return Task.CompletedTask;
         }
 
-        public Task Handle(IncludeSlideInStudy command)
+        public Task Handle(IncludeSlideInStudy command, SlideStore slideStore)
         {
             _logger.LogInformation("Handling command {CommandName}", nameof(IncludeSlideInStudy));
             return Task.CompletedTask;

@@ -21,7 +21,7 @@ namespace Web.Api
 
                 var studyHandlers = s.GetRequiredService<StudyHandlers>();
                 commandBus.RegisterHandler<StartStudy>(studyHandlers.Handle);
-                commandBus.RegisterHandler<IncludeSlideInStudy>(studyHandlers.Handle);
+                commandBus.RegisterHandler<IncludeSlideInStudy>(c => studyHandlers.Handle(c, new SlideStore()));
 
                 return commandBus;
             });
